@@ -14,13 +14,11 @@ listaPrimos = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 6
                103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199]
 
 def primos():
-    while True:
         p = random.choice(listaPrimos)
         q = random.choice(listaPrimos)
         while q == p:
             q = random.choice(listaPrimos)
-            return p, q
-
+        return p,q
 def calcular_n(p, q):
     return p * q
 
@@ -33,7 +31,7 @@ def generar_clave_publica(phi_n):
                 return e
 
 def generar_clave_privada(e, phi_n):
-    for d in range(1, phi_n):
+    for d in range(2, phi_n):
         if (d * e) % phi_n == 1:
             return d
 
