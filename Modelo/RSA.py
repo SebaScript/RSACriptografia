@@ -32,34 +32,52 @@ def generar_clave_publica(phi_n):
 
 def generar_clave_privada(e, phi_n):
     for d in range(2, phi_n):
-        if (d * e) % phi_n == 1:
+        if (e * d) % phi_n == 1:
             return d
 
+
+
 def encriptar(mensaje, e, n):
-    indices_mensaje = [Caracteres.index(c) for c in mensaje]
-    mensaje_encriptado = [(i ** e) % n for i in indices_mensaje]
-    return ''.join([Caracteres[i % len(Caracteres)] for i in mensaje_encriptado])
+    cifrado = [(Caracteres.index(i) ** e) % n for i in mensaje]
+    print("- Mensaje cifrado:")
+    print (''.join([Caracteres[i % len(Caracteres)] for i in cifrado]))
+    return cifrado
 
 def desencriptar(mensaje_encriptado, d, n):
-    indices_encriptados = [Caracteres.index(C) for C in mensaje_encriptado]
-    mensaje_desencriptado = [(j ** d) % n for j in indices_encriptados]
-    return ''.join([Caracteres[i % len(Caracteres)] for i in mensaje_desencriptado])
+    descifrado = [(c ** d) % n for c in mensaje_encriptado]
+    return ''.join([Caracteres[i] for i in descifrado])
 
 def main():
-    p, q = primos()
-    n = calcular_n(p, q)
-    phi_n = calcular_phi(p, q)
-    e = generar_clave_publica(phi_n)
-    d = generar_clave_privada(e, phi_n)
-    print(f"Clave pública (n, e): ({n}, {e})")
-    print(f"Clave privada (n, d): ({n}, {d})")
+    while True:
+        print("Algoritmo RSA para cifrar y descifrar mensajes")
+        decision = input("1) Cifrar y descifrar un mensaje \n"
+              "2) Cerrar ")
+        if decision == "1":
+            p, q = primos()
+            n = calcular_n(p, q)
+            phi_n = calcular_phi(p, q)
+            e = generar_clave_publica(phi_n)
+            d = generar_clave_privada(e, phi_n)
+            print(f"Clave pública (n, e): ({n}, {e})")
+            print(f"Clave privada (n, d): ({n}, {d})")
 
-    mensaje = input("Ingrese un mensaje para encriptar: ")
-    mensaje_cifrado = encriptar(mensaje, e, n)
-    print(f"Mensaje encriptado: {mensaje_cifrado}")
+            mensaje = input("Ingrese un mensaje para encriptar: ")
 
-    mensaje_descifrado = desencriptar(mensaje_cifrado, d, n)
-    print(f"Mensaje desencriptado: {mensaje_descifrado}")
+            mensaje_cifrado = encriptar(mensaje, e, n)
+            mensaje_descifrado = desencriptar(mensaje_cifrado, d, n)
+
+
+            decision2 = int(input("¿Ver el mensaje descifrado\n"
+                                  "1) Si. \n"
+                                  "2) No. "))
+            if decision2 == 1:
+                print("- Mensaje descifrado:")
+                print(mensaje_descifrado)
+        elif decision == "2":
+            return False
+
+        else:
+            print("Por favor ingrese 1 o 2")
 
 
 if __name__ == "__main__":
